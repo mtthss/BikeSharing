@@ -1,0 +1,22 @@
+
+#################################
+#################################
+# TODO
+#################################
+#################################
+
+- Random Forests
+try lowering min_sample_split
+try increasing n_estimators
+
+- PCA
+
+- Theano MLP
+
+- Bin temperatures into a set of classes (hot cold medium)
+
+-
+
+
+#################################
+#################################
