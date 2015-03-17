@@ -11,3 +11,6 @@ TEST_DATA = '../Competition4Shared/Data/test.csv'
 PREDICTION_FILE = '../Competition4Shared/predictions/prediction_%s.csv'
 
 HASH_MEANING_FILE = '../Competition4Shared/hash_meaning.csv'
+
+ALL_COLS = ['date', 'time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed',
+            'tempTimesHumidity', 'tempTimesWindspeed', 'humidityTimesWindspeed', 'tempDivWindspeed']

@@ -1,13 +1,16 @@
-
 ###########
 # Imports #
 ###########
 from __future__ import division
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 import numpy as np
-import pickle
+
+
 np.set_printoptions(threshold=np.nan)
+from util.const import *
+from util.util import pickle_data
 
 
 ################
@@ -15,8 +18,8 @@ np.set_printoptions(threshold=np.nan)
 ################
 print "---------------"
 print "Reading..."
-df_train = pd.read_csv('../Data/train.csv')
-df_test = pd.read_csv('../Data/test.csv')
+df_train = pd.read_csv(TRAIN_DATA)
+df_test = pd.read_csv(TEST_DATA)
 
 
 #######################
@@ -24,18 +27,19 @@ df_test = pd.read_csv('../Data/test.csv')
 #######################
 print "\n---------------"
 print "Engineering timestamps..."
-def transform_timestamps(df):
 
+
+def transform_timestamps(df):
     i = 0
     for timestamp in df['datetime']:
-
         i += 1
         date_object = datetime.strptime(timestamp.split()[0], '%Y-%m-%d')
         time = timestamp.split()[1][:2]
         date = datetime.date(date_object).weekday()
-        df.loc[i-1, 'date'] = date
-        df.loc[i-1, 'time'] = time
+        df.loc[i - 1, 'date'] = date
+        df.loc[i - 1, 'time'] = time
     return df
+
 
 train = transform_timestamps(df_train)
 test = transform_timestamps(df_test)
@@ -46,24 +50,25 @@ test = transform_timestamps(df_test)
 ##############################
 print "\n---------------"
 print "Combining weather features..."
-def my_poly(df):
 
+
+def my_poly(df):
     i = 0
     for temp in df['atemp']:
-
         i += 1
-        hu = df.loc[i-1, 'humidity']
-        ws = df.loc[i-1, 'windspeed']
-        tempTimesHumidity = temp*hu
-        tempTimesWindspeed = temp*ws
-        humidityTimesWindSpeed = hu*ws
-        tempDivWindspeed = float(temp)/ws
-        df.loc[i-1, 'tempTimesHumidity'] = tempTimesHumidity
-        df.loc[i-1, 'tempTimesWindspeed'] = tempTimesWindspeed
-        df.loc[i-1, 'humidityTimesWindspeed'] = humidityTimesWindSpeed
-        df.loc[i-1, 'tempDivWindspeed'] = tempDivWindspeed
+        hu = df.loc[i - 1, 'humidity']
+        ws = df.loc[i - 1, 'windspeed']
+        tempTimesHumidity = temp * hu
+        tempTimesWindspeed = temp * ws
+        humidityTimesWindSpeed = hu * ws
+        tempDivWindspeed = float(temp) / ws
+        df.loc[i - 1, 'tempTimesHumidity'] = tempTimesHumidity
+        df.loc[i - 1, 'tempTimesWindspeed'] = tempTimesWindspeed
+        df.loc[i - 1, 'humidityTimesWindspeed'] = humidityTimesWindSpeed
+        df.loc[i - 1, 'tempDivWindspeed'] = tempDivWindspeed
 
     return df
+
 
 train = my_poly(df_train)
 test = my_poly(df_test)
@@ -81,12 +86,8 @@ test = my_poly(df_test)
 ##########
 print '\n------------------'
 print 'Pickling...'
-all_cols = ['date','time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed',
-            'tempTimesHumidity', 'tempTimesWindspeed', 'humidityTimesWindspeed', 'tempDivWindspeed']
-pickle.dump(all_cols, open("../Data/all_cols.pkl", "wb"))
-pickle.dump(train, open("../Data/train.pkl", "wb"))
-pickle.dump(test, open("../Data/test.pkl", "wb"))
 
+pickle_data(train, test)
 
 ##########
 # Ending #
