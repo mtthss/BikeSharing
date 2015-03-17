@@ -9,5 +9,5 @@ class Timer():
     def __init__(self):
         self.start = datetime.now()
 
-    def finish(self):
+    def elapsed(self):
         return datetime.now() - self.start

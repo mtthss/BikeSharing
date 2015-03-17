@@ -1,4 +1,4 @@
-from __future__ import division
+from __future__ import division, print_function
 import pickle as pk
 from const import *
 import pandas as pd
@@ -23,9 +23,11 @@ def get_parameters_hash(parameters):
     return hash_
 
 
-def generate_submission(test, predictions, hash_):
+def generate_submission(test, predictions, hash_, verbose=True):
     df_submission = pd.DataFrame(predictions, test.datetime, columns=['count'])
     pd.DataFrame.to_csv(df_submission, PREDICTION_FILE % hash_)
+    if verbose:
+        print('Submission file: {}'.format(PREDICTION_FILE % hash_))
 
 
 def rmsle(y_true, y_pred):
