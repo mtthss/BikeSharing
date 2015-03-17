@@ -19,42 +19,51 @@ import pickle
 import numpy as np
 import pylab as pl
 from sklearn.ensemble import RandomForestRegressor
-
+from util.util import unpickle_data, get_parameters_hash
+from util.const import *
 
 ########################
 # Load Engineered Data #
 ########################
 print "---------------"
 print "Unpickling the engineered data..."
-pkl_train = open('../Data/train.pkl', 'rb')
-pkl_test = open('../Data/test.pkl', 'rb')
-pkl_cols = open('../Data/test.pkl', 'rb')
-train = pickle.load(pkl_train)
-test = pickle.load(pkl_test)
-all_cols = pickle.load(pkl_test)
+train, test = unpickle_data()
 
 ##################
 # Random Forests #
 ##################
-cols = ['date','time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed']
-rf = RandomForestRegressor(n_estimators=1800, min_samples_split=7, oob_score=True)
 
-casual = rf.fit(train[cols], train.casual)
+# parameters
+p = {
+    'cols': ['date', 'time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed'],
+    'classifier': RandomForestRegressor,
+    'classifier_args': {
+        'n_estimators': 1800,
+        'min_samples_split': 7,
+        'oob_score': True
+    }
+}
+
+submission_hash = get_parameters_hash(p)
+
+rf = p['classifier'](**p['classifier_args'])
+
+casual = rf.fit(train[p['cols']], train.casual)
 print casual.feature_importances_
 
-predict_casual = rf.predict(test[cols])
+predict_casual = rf.predict(test[p['cols']])
 
-registered = rf.fit(train[cols], train.registered)
+registered = rf.fit(train[p['cols']], train.registered)
 print registered.feature_importances_
 
-predict_registered = rf.predict(test[cols])
-count = [int(round(i+j)) for i,j in zip(predict_casual, predict_registered)]
+predict_registered = rf.predict(test[p['cols']])
+count = [int(round(i + j)) for i, j in zip(predict_casual, predict_registered)]
 
 ##############
 # Submission #
 ##############
 print "---------------"
 print "Generating submission..."
-df_submission = pd.DataFrame(count, test.datetime, columns = ['count'])
-pd.DataFrame.to_csv(df_submission ,'../Data/rf_predict.csv')
+df_submission = pd.DataFrame(count, test.datetime, columns=['count'])
+pd.DataFrame.to_csv(df_submission, PREDICTION_FILE % submission_hash)
 
