@@ -32,4 +32,4 @@ def generate_submission(test, predictions, hash_, verbose=True):
 
 def rmsle(y_true, y_pred):
     n = y_true.shape[0]
-    return np.sqrt(np.square(np.log1p(y_pred) - np.log1p(y_true)) / n)
+    return np.sqrt(np.square(np.log1p(y_pred) - np.log1p(y_true)).sum() / n)
