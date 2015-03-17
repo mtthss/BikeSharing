@@ -13,7 +13,7 @@ from sklearn.ensemble import RandomForestRegressor
 # Load Engineered Data #
 ########################
 print "---------------"
-print "Unpickling engineered data..."
+print "Unpickling the engineered data..."
 pkl_train = open('../Data/train.pkl', 'rb')
 pkl_test = open('../Data/test.pkl', 'rb')
 pkl_cols = open('../Data/test.pkl', 'rb')
