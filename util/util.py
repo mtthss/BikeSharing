@@ -5,12 +5,12 @@ import pandas as pd
 import numpy as np
 
 
-def pickle_data(train_data, test_data, index = "0"):
+def pickle_data(train_data, test_data, index="0"):
     pk.dump(train_data, open(PICKLED_TRAIN_DATA % index, 'wb'))
     pk.dump(test_data, open(PICKLED_TEST_DATA % index, 'wb'))
 
 
-def unpickle_data(index = "0"):
+def unpickle_data(index="0"):
     train_data = pk.load(open(PICKLED_TRAIN_DATA % index, 'rb'))
     test_data = pk.load(open(PICKLED_TEST_DATA % index, 'rb'))
     return train_data, test_data
