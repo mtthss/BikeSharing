@@ -1,14 +1,3 @@
-#################################
-#################################
-# TODO
-#################################
-#################################
-# try lowering min_sample_split
-# try increasing n_estimators
-# try PCA
-# try Theano MLP
-#################################
-#################################
 
 ###########
 # Imports #
@@ -32,10 +21,12 @@ train, test = unpickle_data()
 ##################
 # Random Forests #
 ##################
+print "---------------"
+print "Running random forests..."
 
 # parameters
 p = {
-    'cols': ['date', 'time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed'],
+    'cols': ['date', 'time', 'season', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed', 'tempTimesHumidity', 'tempTimesWindspeed'],
     'classifier': RandomForestRegressor,
     'classifier_args': {
         'n_estimators': 1800,
