@@ -11,3 +11,4 @@
 - [ ] Bin temperatures into a set of classes (hot cold medium)
 - [ ] Fisher's LDA
 - [ ] Log transform of outcome
+- [ ] VW
