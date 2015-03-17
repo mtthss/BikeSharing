@@ -10,4 +10,4 @@
 - [ ] Theano MLP
 - [ ] Bin temperatures into a set of classes (hot cold medium)
 - [ ] Fisher's LDA
-- [ ] VW
+- [ ] Log transform of outcome
