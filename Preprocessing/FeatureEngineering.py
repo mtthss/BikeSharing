@@ -2,6 +2,7 @@
 ###########
 # Imports #
 ###########
+from __future__ import division
 import pandas as pd
 from datetime import datetime
 import numpy as np

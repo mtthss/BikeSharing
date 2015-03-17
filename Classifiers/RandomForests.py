@@ -1,7 +1,21 @@
+#################################
+#################################
+# TODO
+#################################
+#################################
+# try lowering min_sample_split
+# try increasing n_estimators
+# try PCA
+# try Theano MLP
+#################################
+#################################
+
+
 
 ###########
 # Imports #
 ###########
+from __future__ import division
 import pandas as pd
 import pickle
 import numpy as np
@@ -24,10 +38,8 @@ all_cols = pickle.load(pkl_test)
 ##################
 # Random Forests #
 ##################
-print "---------------"
-print "Running Random Forests..."
-cols = ['date','time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed', 'tempTimesHumidity', 'tempTimesWindspeed', 'humidityTimesWindspeed']
-rf = RandomForestRegressor(n_estimators=1500, min_samples_split=6, oob_score=True)
+cols = ['date','time', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp', 'humidity', 'windspeed']
+rf = RandomForestRegressor(n_estimators=1800, min_samples_split=7, oob_score=True)
 
 casual = rf.fit(train[cols], train.casual)
 print casual.feature_importances_
@@ -38,9 +50,7 @@ registered = rf.fit(train[cols], train.registered)
 print registered.feature_importances_
 
 predict_registered = rf.predict(test[cols])
-
 count = [int(round(i+j)) for i,j in zip(predict_casual, predict_registered)]
-
 
 ##############
 # Submission #
