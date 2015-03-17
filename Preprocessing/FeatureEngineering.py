@@ -70,8 +70,8 @@ def my_poly(df):
     return df
 
 
-train = my_poly(df_train)
-test = my_poly(df_test)
+train = my_poly(train)
+test = my_poly(test)
 
 
 #################
