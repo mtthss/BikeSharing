@@ -5,14 +5,14 @@ from const import *
 __author__ = 'hmourit'
 
 
-def pickle_data(train_data, test_data):
-    pk.dump(train_data, open(PICKLED_TRAIN_DATA, 'wb'))
-    pk.dump(test_data, open(PICKLED_TEST_DATA, 'wb'))
+def pickle_data(train_data, test_data, index = "0"):
+    pk.dump(train_data, open(PICKLED_TRAIN_DATA % index, 'wb'))
+    pk.dump(test_data, open(PICKLED_TEST_DATA % index, 'wb'))
 
 
-def unpickle_data():
-    train_data = pk.load(open(PICKLED_TRAIN_DATA, 'rb'))
-    test_data = pk.load(open(PICKLED_TEST_DATA, 'rb'))
+def unpickle_data(index = "0"):
+    train_data = pk.load(open(PICKLED_TRAIN_DATA % index, 'rb'))
+    test_data = pk.load(open(PICKLED_TEST_DATA % index, 'rb'))
     return train_data, test_data
 
 
