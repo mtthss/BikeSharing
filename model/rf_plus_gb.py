@@ -5,7 +5,7 @@ import numpy as np
 
 from util.util import *
 from util.timer import Timer
-from Preprocessing.feature_engineering import engineer_data
+from preprocessing.feature_engineering import engineer_data
 
 
 # Adapted from https://github.com/dirtysalt/tomb/blob/master/kaggle/bike-sharing-demand/pub0.py
