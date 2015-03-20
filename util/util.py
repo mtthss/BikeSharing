@@ -16,18 +16,19 @@ def unpickle_data(index="0"):
     return train_data, test_data
 
 
-def get_parameters_hash(parameters):
+def _get_parameters_hash(parameters):
     hash_ = str(hash(str(parameters)))
     with open(HASH_MEANING_FILE, 'a') as file_:
         file_.write('{},{}\n'.format(hash_, str(parameters)))
     return hash_
 
 
-def generate_submission(test, predictions, hash_, verbose=True):
+def generate_submission(test, predictions, parameters, verbose=True):
     df_submission = pd.DataFrame(predictions, test.datetime, columns=['count'])
+    hash_ = _get_parameters_hash(parameters)
     pd.DataFrame.to_csv(df_submission, PREDICTION_FILE % hash_)
     if verbose:
-        print('Submission file: {}'.format(PREDICTION_FILE % hash_))
+        print('Submission hash: {}'.format(hash_))
 
 
 def rmsle(y_true, y_pred):
