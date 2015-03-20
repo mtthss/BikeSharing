@@ -1,13 +1,11 @@
-
-###########
-# Imports #
-###########
 import pickle as pk
+
 import numpy as np
 import pandas as pd
 from sklearn.lda import LDA
+
 from util.util import unpickle_data
-from util.const import *
+
 
 
 ########################
@@ -47,27 +45,27 @@ print "Run LDA wrt casual users..."
 clf.fit(X_train_casual, y_train_casual)
 LDA_train_casual = clf.transform(X_train_casual)
 LDA_test_casual = clf.transform(X_test_casual)
-df_LDA_train_casual = pd.DataFrame(LDA_train_casual,index=dates_train,columns=cols)
-df_LDA_test_casual = pd.DataFrame(LDA_test_casual,index=dates_test,columns=cols)
+df_LDA_train_casual = pd.DataFrame(LDA_train_casual, index=dates_train, columns=cols)
+df_LDA_test_casual = pd.DataFrame(LDA_test_casual, index=dates_test, columns=cols)
 
 print "\n---------------"
 print "Run LDA wrt registered users..."
 clf.fit(X_train_reg, y_train_reg)
 LDA_train_reg = clf.transform(X_train_reg)
 LDA_test_reg = clf.transform(X_test_reg)
-df_LDA_train_reg = pd.DataFrame(LDA_train_reg,index=dates_train,columns=cols)
-df_LDA_test_reg = pd.DataFrame(LDA_test_reg,index=dates_test,columns=cols)
+df_LDA_train_reg = pd.DataFrame(LDA_train_reg, index=dates_train, columns=cols)
+df_LDA_test_reg = pd.DataFrame(LDA_test_reg, index=dates_test, columns=cols)
 
 print "\n---------------"
 print "Run LDA wrt registered users..."
 i = 0
 for timestamp in df_LDA_train_reg['datetime']:
     i += 1
-    df_LDA_train_reg.loc[i - 1, 'casual'] = y_train_reg[i-1]
-i=0
+    df_LDA_train_reg.loc[i - 1, 'casual'] = y_train_reg[i - 1]
+i = 0
 for timestamp in df_LDA_train_casual['datetime']:
     i += 1
-    df_LDA_test_reg.loc[i - 1, 'casual'] = y_train_casual[i-1]
+    df_LDA_test_reg.loc[i - 1, 'casual'] = y_train_casual[i - 1]
 
 
 ##########
