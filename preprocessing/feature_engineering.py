@@ -4,7 +4,7 @@ import pandas as pd
 
 ENGINEERED_FEATS = ['year', 'year-2011', 'month', 'day', 'weekday', 'hour', 'dummy_season', 'temp * humidity',
                     'temp*windspeed', 'humidity*windspeed', 'temp/windspeed', 'dummy_weather', 'dummy_year',
-                    'dummy_month', 'dummy_day', 'dummy_weekday', 'dummy_hour']
+                    'dummy_month', 'dummy_day', 'dummy_weekday', 'dummy_hour', 'hour/2']
 
 
 def _compute_features(data, features):
@@ -36,6 +36,8 @@ def _compute_features(data, features):
             df = pd.concat([df, dummies], axis=1)
         elif feat == 'hour':
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.hour)
+        elif feat == 'hour/2':
+            df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: int(x.hour/2))
         elif feat == 'dummy_hour':
             dummies = pd.get_dummies(pd.to_datetime(data['datetime']).apply(lambda x: x.hour), prefix='hour')
             df = pd.concat([df, dummies], axis=1)
