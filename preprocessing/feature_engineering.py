@@ -24,11 +24,6 @@ def _compute_features(data, features):
         elif feat == 'dummy_month':
             dummies = pd.get_dummies(pd.to_datetime(data['datetime']).apply(lambda x: x.month), prefix='month')
             df = pd.concat([df, dummies], axis=1)
-        elif feat == 'day':
-            df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.day)
-        elif feat == 'dummy_day':
-            dummies = pd.get_dummies(pd.to_datetime(data['datetime']).apply(lambda x: x.day), prefix='day')
-            df = pd.concat([df, dummies], axis=1)
         elif feat == 'weekday':
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.weekday())
         elif feat == 'dummy_weekday':
