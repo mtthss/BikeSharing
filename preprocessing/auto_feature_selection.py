@@ -57,10 +57,15 @@ df_LDA_test_reg = pd.DataFrame(LDA_test_reg, index=dates_test, columns=cols)
 
 print "\n---------------"
 print "Add class value registered..."
+
+df_LDA_train_casual['casual'] = y_train_casual
+df_LDA_train_reg['registered'] = y_train_reg
+
+"""
 i = 0
 for timestamp in df_LDA_train_reg.index:
     i += 1
-    df_LDA_train_reg.loc[i - 1, 'casual'] = y_train_reg[i - 1]
+    df_LDA_train_casual.loc[i - 1, 'casual'] = y_train_reg[i - 1]
 
 print "\n---------------"
 print "Add class value casual..."
@@ -68,7 +73,7 @@ i = 0
 for timestamp in df_LDA_train_casual.index:
     i += 1
     df_LDA_test_reg.loc[i - 1, 'casual'] = y_train_casual[i - 1]
-
+"""
 
 ##########
 # Pickle #
