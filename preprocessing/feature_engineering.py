@@ -3,7 +3,7 @@ from __future__ import division, print_function
 import pandas as pd
 
 ENGINEERED_FEATS = ['year', 'year-2011', 'month', 'weekday', 'hour', 'dummy_season', 'temp * humidity',
-                    'temp*windspeed', 'humidity*windspeed', 'temp/windspeed', 'dummy_weather', 'dummy_year',
+                    'temp*windspeed', 'humidity*windspeed', 'dummy_weather', 'dummy_year',
                     'dummy_month', 'dummy_weekday', 'dummy_hour', 'hour/2']
 
 
@@ -47,8 +47,6 @@ def _compute_features(data, features):
             df[feat] = data['atemp'] * data['windspeed']
         elif feat == 'humidity*windspeed':
             df[feat] = data['atemp'] * data['windspeed']
-        elif feat == 'temp/windspeed':
-            df[feat] = data['atemp'] / data['windspeed']
         elif feat == 'dummy_weather':
             df = pd.concat([df, pd.get_dummies(data['weather'], prefix='weather')], axis=1)
     return df
