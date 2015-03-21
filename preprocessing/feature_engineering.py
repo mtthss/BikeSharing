@@ -25,6 +25,11 @@ def _compute_features(data, features):
             df['summer'] = (data['season'] == 2).astype(int)
             df['fall'] = (data['season'] == 3).astype(int)
             df['winter'] = (data['season'] == 4).astype(int)
+        elif feat == 'dummy_weather':
+            df['weather_1'] = (data['weather'] == 1).astype(int)
+            df['weather_2'] = (data['weather'] == 2).astype(int)
+            df['weather_3'] = (data['weather'] == 3).astype(int)
+            df['weather_4'] = (data['weather'] == 4).astype(int)
         elif feat == 'temp*humidity':
             df[feat] = data['atemp'] * data['humidity']
         elif feat == 'temp*windspeed':
