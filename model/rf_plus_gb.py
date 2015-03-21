@@ -12,7 +12,7 @@ from os import system
 # Adapted from https://github.com/dirtysalt/tomb/blob/master/kaggle/bike-sharing-demand/pub0.py
 
 p = {
-    'features': ['weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
+    'features': ['dummy_weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
                  'humidity', 'windspeed'],
     'target': TARGETS,
     'reg1': GradientBoostingRegressor,
