@@ -39,6 +39,10 @@ def _compute_features(data, features):
 
 
 def engineer_data(data, features, target=None):
+    if type(features) is str:
+        features = [features]
+    if type(target) is str:
+        target = [target]
     X = _compute_features(data, features)
     if target is not None:
         y = _compute_features(data, target)
