@@ -2,9 +2,9 @@ from __future__ import division, print_function
 
 import pandas as pd
 
-ENGINEERED_FEATS = ['year', 'year-2011', 'month', 'day', 'weekday', 'hour', 'dummy_season', 'temp * humidity',
+ENGINEERED_FEATS = ['year', 'year-2011', 'month', 'weekday', 'hour', 'dummy_season', 'temp * humidity',
                     'temp*windspeed', 'humidity*windspeed', 'temp/windspeed', 'dummy_weather', 'dummy_year',
-                    'dummy_month', 'dummy_day', 'dummy_weekday', 'dummy_hour', 'hour/2']
+                    'dummy_month', 'dummy_weekday', 'dummy_hour', 'hour/2']
 
 
 def _compute_features(data, features):
@@ -23,11 +23,6 @@ def _compute_features(data, features):
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.month)
         elif feat == 'dummy_month':
             dummies = pd.get_dummies(pd.to_datetime(data['datetime']).apply(lambda x: x.month), prefix='month')
-            df = pd.concat([df, dummies], axis=1)
-        elif feat == 'day':
-            df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.day)
-        elif feat == 'dummy_day':
-            dummies = pd.get_dummies(pd.to_datetime(data['datetime']).apply(lambda x: x.day), prefix='day')
             df = pd.concat([df, dummies], axis=1)
         elif feat == 'weekday':
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.weekday())

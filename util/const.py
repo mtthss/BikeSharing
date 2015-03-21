@@ -28,10 +28,10 @@ ORIG_FEAT = [
 ]
 
 BASIC_FEAT = [
-    'dummy_season',
+    'season',
     'holiday',
     'workingday',
-    'dummy_weather',
+    'weather',
     'temp',
     'atemp',
     'humidity',
