@@ -20,6 +20,8 @@ def _compute_features(data, features):
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.weekday())
         elif feat == 'hour':
             df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.hour)
+        elif feat == 'hour/2':
+            df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: int(x.hour/2))
         elif feat == 'dummy_season':
             df['spring'] = (data['season'] == 1).astype(int)
             df['summer'] = (data['season'] == 2).astype(int)
