@@ -74,7 +74,7 @@ for timestamp in df_LDA_train_casual.index:
 # Pickle #
 ##########
 print "\n---------------"
-print "Pickling..."
+print "Pickling... "
 pk.dump(df_LDA_test_casual, open("../data/lda_test_casual.pkl", 'wb'))
 pk.dump(df_LDA_test_reg, open("../data/lda_test_reg.pkl", 'wb'))
 pk.dump(df_LDA_train_casual, open("../data/lda_train_casual.pkl", 'wb'))
