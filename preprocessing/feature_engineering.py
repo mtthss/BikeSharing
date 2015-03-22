@@ -52,12 +52,14 @@ def _compute_features(data, features):
     return df
 
 
-def engineer_data(data, features, target=None):
+def engineer_data(data, features, target=None, normalize=False):
     if type(features) is str:
         features = [features]
     if type(target) is str:
         target = [target]
     X = _compute_features(data, features)
+    if normalize:
+        X = (X - X.mean()) / (X.max() - X.min())
     if target is not None:
         y = _compute_features(data, target)
         return X, y
