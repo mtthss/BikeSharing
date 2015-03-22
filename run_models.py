@@ -3,7 +3,8 @@ from __future__ import division, print_function
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import BayesianRidge
+from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor, BaggingRegressor, GradientBoostingRegressor
 
 from util.util import generate_submission
 from util.const import *
@@ -45,6 +46,17 @@ def _decode_dict(data):
     return rv
 
 
+def _process_dict(data):
+    rv = {}
+    for key, value in data.iteritems():
+        if key == 'base_estimator' and value == 'BayesianRidge':
+            value = globals()[value](fit_intercept=True)
+        elif key == 'base_estimator' and value == 'RandomForest':
+            value = globals()[value](fit_intercept=True)
+        rv[key] = value
+    return rv
+
+
 if __name__ == '__main__':
 
     #################################
@@ -64,20 +76,22 @@ if __name__ == '__main__':
     train = pd.read_csv(TRAIN_DATA[3:])
     test = pd.read_csv(TEST_DATA[3:])
     features = config['features'].split(', ')
-    X, y = engineer_data(train, features, TARGETS)
-    X_test = engineer_data(test, features)
+    X, y = engineer_data(train, features, TARGETS, normalize=True)
+    X_test = engineer_data(test, features, normalize=True)
 
     print('Elapsed: {}'.format(timer.elapsed()))
 
     #################################
     ### Create a classifier model ###
     #################################
-    predictor = locals()[config['classifier']](**config['classifier_args'])
+    arguments = _process_dict(config['classifier_args'])
+    predictor = locals()[config['classifier']](**arguments)
     if 'predict_log' in config and config['predict_log'] == "False":
         predict_log = False
     else:
         predict_log = True
     predictor = IntegratedRegressor(predictor, predict_log=predict_log)
+    
 
     #################################
     ### Train a classifier model  ###

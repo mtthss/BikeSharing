@@ -1,5 +1,6 @@
 from __future__ import division, print_function
 
+import pickle as pk
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -16,33 +17,50 @@ p = {
     'target': TARGETS,
     'classifier': RandomForestRegressor,
     'classifier_args': {
-        'n_estimators': 1800,
+        'n_estimators': 2000,
         'min_samples_split': 7,
         'oob_score': True
-    }
+    },
+    'lda': True
 }
 
 timer = Timer()
 
+print('\n------------------')
 print('Loading data... ', end='')
+train_reg = pk.load(open("../data/lda_train_reg.pkl", 'rb'))
+train_cas = pk.load(open("../data/lda_train_casual.pkl", 'rb'))
+test_reg = pk.load(open("../data/lda_test_reg.pkl", 'rb'))
+test_cas = pk.load(open("../data/lda_test_casual.pkl", 'rb'))
+
 train = pd.read_csv(TRAIN_DATA)
 test = pd.read_csv(TEST_DATA)
 X, y = engineer_data(train, p['features'], p['target'])
-X_test = engineer_data(test, p['features'])
+
+print('\n------------------')
+print('Elapsed: {}'.format(timer.elapsed()))
+rf = p['classifier'](**p['classifier_args'])
+pred = np.zeros((test_cas.shape[0],))
+
+print('\n------------------')
+print('Training {} for "{}"... '.format(p['classifier'], 'registered'), end='')
+train_reg.drop('registered', axis=1, inplace=True)
+rf.fit(train_reg, y['registered'])
+pred += rf.predict(test_reg)
 print('Elapsed: {}'.format(timer.elapsed()))
 
-rf = p['classifier'](**p['classifier_args'])
+print('\n------------------')
+print('Training {} for "{}"... '.format(p['classifier'], 'casual'), end='')
+train_cas.drop('casual', axis=1, inplace=True)
+rf.fit(train_cas, y['casual'])
+pred += rf.predict(test_cas)
+print('Elapsed: {}'.format(timer.elapsed()))
 
-pred = np.zeros((X_test.shape[0],))
-for target in p['target']:
-    print('Training {} for "{}"... '.format(p['classifier'], target), end='')
-    rf.fit(X, y[target])
-    pred += rf.predict(X_test)
-    print('Elapsed: {}'.format(timer.elapsed()))
-
+print('\n------------------')
+print('Generate submission')
 pred = np.intp(pred.round())
-
 generate_submission(test, pred, p)
 
+print('\n------------------')
 print('\nTotal time: {}\n\n'.format(timer.elapsed()))
 

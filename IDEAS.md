@@ -2,14 +2,14 @@
 
 - [x] Create project
 - [ ] Set up a cross validation framework to test algorithms without submitting
-- [ ] Random Forests
-    - [ ] try increasing min_sample_split above 8 -> shit
-    - [ ] try lowering min_sample_split
-    - [ ] try increasing n_estimators
+- [x] Random Forests
+    - [x] try increasing min_sample_split above 8 -> shit
+    - [x] try lowering min_sample_split
+    - [x] try increasing n_estimators
 - [ ] PCA
-- [ ] Theano MLP
+- [F] Theano MLP
 - [ ] Bin temperatures into a set of classes (hot cold medium)
-- [ ] Fisher's LDA
+- [F] Fisher's LDA
 - [ ] Log transform of outcome
 - [ ] VW
 
