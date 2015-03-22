@@ -51,8 +51,8 @@ def _process_dict(data):
     for key, value in data.iteritems():
         if key == 'base_estimator' and value == 'BayesianRidge':
             value = globals()[value](fit_intercept=True)
-        elif key == 'base_estimator' and value == 'RandomForest':
-            value = globals()[value](fit_intercept=True)
+        elif key == 'base_estimator' and value == 'RandomForestRegressor':
+            value = globals()[value](n_estimators=500, min_samples_split=7, oob_score=True, n_jobs=-1)
         rv[key] = value
     return rv
 
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     else:
         predict_log = True
     predictor = IntegratedRegressor(predictor, predict_log=predict_log)
-    
+
 
     #################################
     ### Train a classifier model  ###
