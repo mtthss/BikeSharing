@@ -9,9 +9,12 @@ from util.util import generate_submission
 from util.const import *
 from preprocessing.feature_engineering import engineer_data
 from util.timer import Timer
+from model import IntegratedRegressor
 
 import argparse
 import json
+
+import os
 
 
 def _decode_list(data):
@@ -58,8 +61,8 @@ if __name__ == '__main__':
     #####################
     ### Load the data ###
     #####################
-    train = pd.read_csv(TRAIN_DATA)
-    test = pd.read_csv(TEST_DATA)
+    train = pd.read_csv(TRAIN_DATA[3:])
+    test = pd.read_csv(TEST_DATA[3:])
     features = config['features'].split(', ')
     X, y = engineer_data(train, features, TARGETS)
     X_test = engineer_data(test, features)
@@ -70,22 +73,25 @@ if __name__ == '__main__':
     ### Create a classifier model ###
     #################################
     predictor = locals()[config['classifier']](**config['classifier_args'])
+    if 'predict_log' in config and config['predict_log'] == "False":
+        predict_log = False
+    else:
+        predict_log = True
+    predictor = IntegratedRegressor(predictor, predict_log=predict_log)
 
     #################################
     ### Train a classifier model  ###
     #################################
-    pred = np.zeros((X_test.shape[0],))
-    for target in TARGETS:
-        print('Training {} for "{}"... '.format(config['classifier'], target), end='')
-        predictor.fit(X, y[target])
-        pred += predictor.predict(X_test)
-        print('Elapsed: {}'.format(timer.elapsed()))
+    print('{} Training {}... '.format(timer.elapsed(), config['classifier']))
+    predictor.fit(X, y)
+    pred = predictor.predict(X_test)
     # round and convert to int
     pred = np.intp(pred.round())
 
     #############################
     ### Write the predictions ###
     #############################
+    os.chdir('./model')
     generate_submission(test, pred, config)
 
     print('\nTotal time: {}\n\n'.format(timer.elapsed()))

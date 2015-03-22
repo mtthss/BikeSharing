@@ -1,6 +1,5 @@
 {
     "features": "date, time, season, workingday, weather, temp, atemp, humidity, windspeed, temp*humidity, temp*windspeed",
-    "target": "TARGETS",
     "classifier": "RandomForestRegressor",
     "classifier_args": {
         "n_estimators": 1800,
