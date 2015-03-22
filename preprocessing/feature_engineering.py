@@ -66,7 +66,7 @@ def engineer_data(data, features, target=None, normalize=False, **kwargs):
         target = [target]
     X = _compute_features(data, features, **kwargs)
     if normalize:
-        X = (X) / (X.max() - X.min())
+        X = (X - X.mean()) / (X.max() - X.min())
     if target is not None:
         y = _compute_features(data, target)
         return X, y

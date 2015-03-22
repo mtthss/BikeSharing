@@ -76,8 +76,12 @@ if __name__ == '__main__':
     train = pd.read_csv(TRAIN_DATA[3:])
     test = pd.read_csv(TEST_DATA[3:])
     features = config['features'].split(', ')
-    X, y = engineer_data(train, features, TARGETS, normalize=True)
-    X_test = engineer_data(test, features, normalize=True)
+    if 'normalize' in config and config['normalize'] == "True":
+        normalize = True
+    else:
+        normalize = False
+    X, y = engineer_data(train, features, TARGETS, normalize=normalize)
+    X_test = engineer_data(test, features, normalize=normalize)
 
     print('Elapsed: {}'.format(timer.elapsed()))
 
