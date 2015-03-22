@@ -44,6 +44,7 @@ import sys
 import time
 
 import numpy
+import numpy.random as rng
 
 import theano
 import theano.tensor as T
@@ -62,18 +63,23 @@ class LogisticRegression(object):
         """ Initialize the parameters of the logistic regression
 
         :type input: theano.tensor.TensorType
-        :param input: symbolic variable that describes the input of the
-                      architecture (one minibatch)
-
-        :type n_in: int
-        :param n_in: number of input units, the dimension of the space in
-                     which the datapoints lie
-
-        :type n_out: int
-        :param n_out: number of output units, the dimension of the space in
-                      which the labels lie
-
+        :param input: symbolic var describing the input i.e. one minibatch (theano.tensor.TensorType)
+;        :param n_in: number of input units, number of features (int)
+        :param n_out: number of output units i.e. labels (int)
         """
+
+        W_values = numpy.asarray(rng.uniform(size=(n_in,), low=-1 * range, high=range), dtype=theano.config.floatX)
+        self.W = theano.shared(
+            value=W_values,
+            name='W',
+            borrow=True
+        )
+        self.b = theano.shared(
+            value=numpy.float32(initialBias),
+            name='b',
+            borrow=True,
+        )
+
         # start-snippet-1
         # initialize with 0 the weights W as a matrix of shape (n_in, n_out)
         self.W = theano.shared(
@@ -116,19 +122,7 @@ class LogisticRegression(object):
         """Return the mean of the negative log-likelihood of the prediction
         of this model under a given target distribution.
 
-        .. math::
-
-            \frac{1}{|\mathcal{D}|} \mathcal{L} (\theta=\{W,b\}, \mathcal{D}) =
-            \frac{1}{|\mathcal{D}|} \sum_{i=0}^{|\mathcal{D}|}
-                \log(P(Y=y^{(i)}|x^{(i)}, W,b)) \\
-            \ell (\theta=\{W,b\}, \mathcal{D})
-
-        :type y: theano.tensor.TensorType
-        :param y: corresponds to a vector that gives for each example the
-                  correct label
-
-        Note: we use the mean instead of the sum so that
-              the learning rate is less dependent on the batch size
+        :param y: vector of correct labels (theano.tensor.TensorType)
         """
         # start-snippet-2
         # y.shape[0] is (symbolically) the number of rows in y, i.e.,
@@ -196,11 +190,12 @@ def load_data(dataset):
     if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
         import urllib
         origin = (
-            'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
+            'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist666.pkl.gz'
         )
         print 'Downloading data from %s' % origin
         urllib.urlretrieve(origin, dataset)
 
+    print '\n------------------'
     print '... loading data'
 
     # Load the dataset
@@ -255,8 +250,6 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
     Demonstrate stochastic gradient descent optimization of a log-linear
     model
 
-    This is demonstrated on MNIST.
-
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
                           gradient)
@@ -295,10 +288,11 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
 
     # construct the logistic regression class
     # Each MNIST image has size 28*28
-    classifier = LogisticRegression(input=x, n_in=28 * 28, n_out=10)
+    classifier = LogisticRegression(input=x, n_in=301, n_out=1)
 
     # the cost we minimize during training is the negative log likelihood of
     # the model in symbolic format
+    # TODO change cost function
     cost = classifier.negative_log_likelihood(y)
 
     # compiling a Theano function that computes the mistakes that are made by
