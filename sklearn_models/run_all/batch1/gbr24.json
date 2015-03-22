@@ -2,12 +2,12 @@
     "features": "dummy_weekday, hour, year-2011, season, holiday, workingday, weather, temp, atemp, humidity, windspeed, night",
     "classifier": "GradientBoostingRegressor",
     "classifier_args": {
-        "loss": "ls",
-        "learning_rate": 0.05,
-        "n_estimators": 300,
-        "max_depth": 5,
+        "loss": "huber",
+        "learning_rate": 0.1,
+        "n_estimators": 250,
+        "max_depth": 3,
         "subsample": 0.9,
         "max_features": "auto",
-        "warm_start": "True"
+        "warm_start": "False"
     }
 }
