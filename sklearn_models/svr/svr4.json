@@ -1,0 +1,8 @@
+{
+    "features": "dummy_weekday, hour, year-2011, season, holiday, workingday, weather, temp, atemp, humidity, windspeed, night",
+    "classifier": "SVR",
+    "classifier_args": {
+        "kernel": "sigmoid",
+        "degree": 3
+    }
+}
