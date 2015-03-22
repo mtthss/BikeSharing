@@ -1,0 +1,13 @@
+{
+    "features": "dummy_weekday, hour, year-2011, season, holiday, workingday, weather, temp, atemp, humidity, windspeed, night",
+    "classifier": "GradientBoostingRegressor",
+    "classifier_args": {
+        "loss": "quantile",
+        "learning_rate": 0.1,
+        "n_estimators": 250,
+        "max_depth": 3,
+        "subsample": 1,
+        "max_features": "auto",
+        "warm_start": "False"
+    }
+}

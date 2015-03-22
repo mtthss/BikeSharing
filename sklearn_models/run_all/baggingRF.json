@@ -1,8 +1,0 @@
-{
-    "features": "date, time, season, workingday, weather, temp, atemp, humidity, windspeed, temp*humidity, temp*windspeed, night",
-    "classifier": "BaggingRegressor",
-    "classifier_args": {
-        "base_estimator": "RandomForestRegressor",
-        "n_estimators": 20
-    }
-}
