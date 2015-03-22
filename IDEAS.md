@@ -12,3 +12,6 @@
 - [ ] Fisher's LDA
 - [ ] Log transform of outcome
 - [ ] VW
+
+Best features found so far: ['dummy_weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
+                 'humidity', 'windspeed']

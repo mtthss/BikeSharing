@@ -12,18 +12,18 @@ from os import system
 # Adapted from https://github.com/dirtysalt/tomb/blob/master/kaggle/bike-sharing-demand/pub0.py
 
 p = {
-    'features': ['weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
+    'features': ['dummy_weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
                  'humidity', 'windspeed'],
     'target': TARGETS,
     'reg1': GradientBoostingRegressor,
     'reg1_args': {
-        'n_estimators': 100,
-        'max_depth': 6,
+        'n_estimators': 200,
+        'max_depth': 4,
         'random_state': 0
     },
     'reg2': RandomForestRegressor,
     'reg2_args': {
-        'n_estimators': 1000,
+        'n_estimators': 100,
         'random_state': 0,
         'min_samples_split': 11,
         'oob_score': False,
