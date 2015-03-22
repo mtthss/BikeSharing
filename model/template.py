@@ -1,20 +1,20 @@
 from __future__ import division, print_function
 
 import numpy as np
+from copy import deepcopy
 
 
 class IntegratedRegressor():
     regs = []
 
-    def __init__(self, reg, reg_args, predict_log=True):
+    def __init__(self, reg, predict_log=True):
         self.reg = reg
-        self.reg_args = reg_args
         self.predict_log = predict_log
 
     def fit(self, X, y):
         self.regs = []
         for target in y.columns:
-            tmp = self.reg(**self.reg_args)
+            tmp = deepcopy(self.reg)
             if self.predict_log:
                 tmp.fit(X, np.log1p(y[target]))
             else:
@@ -32,9 +32,9 @@ class IntegratedRegressor():
 
 
 class DayNightRegressor():
-    def __init__(self, reg, reg_args):
-        self.night_reg = reg(**reg_args)
-        self.day_reg = reg(**reg_args)
+    def __init__(self, reg):
+        self.night_reg = deepcopy(reg)
+        self.day_reg = deepcopy(reg)
 
     def fit(self, X, y):
         self.night_reg.fit(X[X['night'] == 1], y[X['night'] == 1])
@@ -43,6 +43,6 @@ class DayNightRegressor():
     def predict(self, X):
         pred = []
         pred = np.append(pred, self.night_reg.predict(X[X['night'] == 1]))
-        pred = np.append(pred, self.night_reg.predict(X[X['night'] == 0]))
+        pred = np.append(pred, self.day_reg.predict(X[X['night'] == 0]))
         idx = X[X['night'] == 1].index.tolist() + X[X['night'] == 0].index.tolist()
-        return np.intp(x for (_, x) in sorted(zip(idx, pred)))
+        return np.intp([x for (_, x) in sorted(zip(idx, pred))])

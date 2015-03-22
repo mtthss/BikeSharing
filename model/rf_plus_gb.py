@@ -5,12 +5,15 @@ from sklearn.ensemble import *
 from util.util import *
 from util.timer import Timer
 from preprocessing.feature_engineering import engineer_data
+from model import IntegratedRegressor, DayNightRegressor
 
 # Adapted from https://github.com/dirtysalt/tomb/blob/master/kaggle/bike-sharing-demand/pub0.py
 
 p = {
     'features': ['dummy_weekday', 'hour', 'year-2011', 'season', 'holiday', 'workingday', 'weather', 'temp', 'atemp',
-                 'humidity', 'windspeed'],
+                 'humidity', 'windspeed', 'night'],
+    'template': IntegratedRegressor,
+    'split_night': True,
     'target': TARGETS,
     'reg1': GradientBoostingRegressor,
     'reg1_args': {
@@ -41,12 +44,16 @@ if __name__ == '__main__':
 
     pred = np.zeros((X_test.shape[0],))
     for reg_key in ['reg1', 'reg2']:
-        for target in p['target']:
-            print('Training {} for "{}"... '.format(p[reg_key], target), end='')
-            reg = p[reg_key](**p[reg_key + '_args'])
-            reg.fit(X, np.log1p(y[target]))
-            pred += np.expm1(reg.predict(X_test))
-            print('Elapsed: {}'.format(timer.elapsed()))
+        print('Training {}... '.format(p[reg_key]), end='')
+        # for target in p['target']:
+        #     reg.fit(X, np.log1p(y[target]))
+        #     pred += np.expm1(reg.predict(X_test))
+        reg = p[reg_key](**p[reg_key + '_args'])
+        reg = IntegratedRegressor(reg)
+        reg = DayNightRegressor(reg)
+        reg.fit(X, y)
+        pred += reg.predict(X_test)
+        print('Elapsed: {}'.format(timer.elapsed()))
 
     # Average
     pred /= 2
