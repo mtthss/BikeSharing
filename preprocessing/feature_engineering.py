@@ -54,7 +54,7 @@ def _compute_features(data, features, **kwargs):
                 night_range = range(1, 7)
             else:
                 night_range = kwargs['night_range']
-            df = df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.hour in night_range).astype(int)
+            df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.hour in night_range).astype(int)
         # TODO day since the beginning
     return df
 
