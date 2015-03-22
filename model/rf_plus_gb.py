@@ -1,13 +1,10 @@
 from __future__ import division, print_function
 
 from sklearn.ensemble import *
-import numpy as np
 
 from util.util import *
-from util.util import _get_parameters_hash
 from util.timer import Timer
 from preprocessing.feature_engineering import engineer_data
-from os import system
 
 # Adapted from https://github.com/dirtysalt/tomb/blob/master/kaggle/bike-sharing-demand/pub0.py
 

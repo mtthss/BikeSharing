@@ -1,1 +1,1 @@
-__author__ = 'hmourit'
+from .template import IntegratedRegressor, DayNightRegressor

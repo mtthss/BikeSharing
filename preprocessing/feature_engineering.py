@@ -4,10 +4,10 @@ import pandas as pd
 
 ENGINEERED_FEATS = ['year', 'year-2011', 'month', 'weekday', 'hour', 'dummy_season', 'temp * humidity',
                     'temp*windspeed', 'humidity*windspeed', 'dummy_weather', 'dummy_year',
-                    'dummy_month', 'dummy_weekday', 'dummy_hour', 'hour/2']
+                    'dummy_month', 'dummy_weekday', 'dummy_hour', 'hour/2', 'night']
 
 
-def _compute_features(data, features):
+def _compute_features(data, features, **kwargs):
     df = pd.DataFrame()
     for feat in features:
         if feat in data:
@@ -49,15 +49,22 @@ def _compute_features(data, features):
             df[feat] = data['atemp'] * data['windspeed']
         elif feat == 'dummy_weather':
             df = pd.concat([df, pd.get_dummies(data['weather'], prefix='weather')], axis=1)
+        elif feat == 'night':
+            if 'night_range' not in kwargs:
+                night_range = range(1, 7)
+            else:
+                night_range = kwargs['night_range']
+            df = df[feat] = pd.to_datetime(data['datetime']).apply(lambda x: x.hour in night_range).astype(int)
+        # TODO day since the beginning
     return df
 
 
-def engineer_data(data, features, target=None, normalize=False):
+def engineer_data(data, features, target=None, normalize=False, **kwargs):
     if type(features) is str:
         features = [features]
     if type(target) is str:
         target = [target]
-    X = _compute_features(data, features)
+    X = _compute_features(data, features, **kwargs)
     if normalize:
         X = (X - X.mean()) / (X.max() - X.min())
     if target is not None:
